@@ -1,0 +1,4 @@
+export http_proxy=http://222.29.98.80:20172
+export https_proxy=http://222.29.98.80:20172
+export {HTTP,HTTPS,FTP,RSYNC}
+_PROXY=$http_proxy
