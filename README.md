@@ -36,17 +36,24 @@ python setup.py install
 
 ## Quick Start
 
-Running our project is very simple. The error_model folder contains the model that injects errors. You can directly run any Python code in this folder, for example
-We provide code for error resilience characterization in folder `./src` with multiple models and datasets. You can also flexibly configure BER, injected layer, injected network components within these files.
-For example, if you want to evaluate the resilience of `Llama-3-8b` on `HellaSwag` dataset, just run
+Our project provides straightforward error resilience characterization through configurable error injection. The core implementation resides in the `./src` directory, containing:
+
+- Preconfigured python files for **multiple LLMs** (opt-1.3b, Mistral-7b, Llama-2-7b, Llama-3-8b, etc.) and **datasets** (LAMBADA, WikiText2, HellaSwag, X-Sum, GSM8K, etc.)
+- Flexible error injection parameters:
+  - **Bit Error Rate (BER)**: Configure via `err_prob_list`
+  - **Target layers**: Specify within `quantize_model_error`
+  - **Network components**: Choose network components such as `Q` and `Down` by configuring `NoisyW8A8Linear`
+
+**Example**: To evaluate Llama-3-8b's resilience on HellaSwag:
 
 ```
 cd src
 CUDA_VISIBLE_DEVICES=0 python main_Llama3_HellaSwag.py
 ```
 
-To characterize the correlation between error magnitude and frequency in impacting LLM performance, you can run python files with MSD in their name, such as 
+To characterize the correlation between error magnitude and frequency in impacting LLM performance, you can execute scripts following our `main_<MODEL>_<DATASET>_MSD.py` naming convention.
 
+**Example**: To evaluate Llama-2-7b's resilience on LAMBADA and WikiText2:
 ```
 cd src
 CUDA_VISIBLE_DEVICES=1 python main_Llama2_LAMBADA_WikiText2_MSD.py
