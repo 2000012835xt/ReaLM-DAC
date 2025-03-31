@@ -1,6 +1,6 @@
 # ReaLM: Reliable and Efficient Large Language Model Inference with Statistical Algorithm-Based Fault Tolerance
 
-**REALM** is accepeted by DAC'25!
+**ReaLM** is accepeted by DAC'25!
 
 This paper systmatically characterize the inherent resilience of LLMs and propose Statistical ABFT to minimize error recovery cost.
 
