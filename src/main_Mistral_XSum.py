@@ -299,8 +299,7 @@ class Evaluator_x_sum:
 
 if __name__=='__main__':
 
-    err_prob_list=[0.0]#, 1e-8,1e-7, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1]
-    #err_prob_list = [1, 2, 4, 8, 16, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384]
+    err_prob_list=[0.0, 1e-8,1e-7, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1]
     ppl_normal_list=[]
     ppl_noisy_list=[]
     acc_noisy_list=[]
@@ -314,65 +313,33 @@ if __name__=='__main__':
 
         print('loading model')
         model_fp16_normal = AutoModelForCausalLM.from_pretrained('mistralai/Mistral-7B-v0.1', torch_dtype=torch.float16, device_map='auto')
-        # model_fp32_noisy = AutoModelForCausalLM.from_pretrained('mistralai/Mistral-7B-v0.1', torch_dtype=torch.float32, device_map='auto')
+  
         act_scales = torch.load('act_scales/Mistral-7B-v0.1.pt')
 
-        # print('smoothing')
-        # #smooth_lm(model_fp16_normal, act_scales, 0.5)
-        # smooth_lm(model_fp32_noisy, act_scales, 0.8)
         
         print('tokenizer')
         tokenizer = AutoTokenizer.from_pretrained('mistralai/Mistral-7B-v0.1')
 
-        # print('loading dataset lambada')
-        # dataset_lambada = load_dataset("lambada", split='validation')
-        
-        # print('loading dataset wikitext')
-        # n_samples=40
-        # dataset_wikitext = load_dataset("wikitext", "wikitext-2-raw-v1", split="test")
 
         print('loading dataset EdinburghNLP/xsum')
         dataset_x_sum=load_dataset('EdinburghNLP/xsum',split='validation[:500]')
 
-        # evaluator = Evaluator(dataset_lambada, tokenizer, 'cuda')
-        # evaluator_ppl = Evaluator_ppl(dataset_wikitext, tokenizer, "cuda", n_samples=n_samples)
 
         with open('./xsum_prompt.txt','r',encoding='utf-8') as file:
             few_prompt = file.read()
         assert isinstance(few_prompt,str), "The document is not a string."
         evaluator_x_sum = Evaluator_x_sum(dataset_x_sum,tokenizer,'cuda', few_prompt)
 
-        # print('Inject_error...')
-        # noisy_model=quantize_mistral_model_error(model_fp32_noisy, err_prob=err_prob)
-        # print('noisy_model_quantized')
-        #print(noisy_model.model.decoder.layers[23])
 
         print('evaluating')
-        #acc=evaluator.evaluate(normal_model)
-        #ppl_nomal = evaluator_ppl.evaluate(normal_model)
-        #x_sum = evaluator_x_sum.evaluate(normal_model)
-        #print("acc",acc,"ppl",ppl_nomal,"x_sum",x_sum)
-        # acc_noisy=evaluator.evaluate(noisy_model)
-        # acc_noisy_list.append(acc_noisy)
-
-        # ppl_noisy= evaluator_ppl.evaluate(noisy_model)
-        # ppl_noisy_list.append(ppl_noisy.cpu().item())
-
         x_sum = evaluator_x_sum.evaluate(model_fp16_normal,model_fp16_normal)
         print("x_sum", x_sum)
         x_sum__noisy_list.append(x_sum)
 
-        # print("acc_noisy",acc_noisy," ", "pll_noisy",ppl_noisy)#," ","x_sum",x_sum)
         end_time_i = time.time()
         print('time_i',(end_time_i - start_time_i)/60)
-    end_time = time.time()
-    # print('acc_noisy_list',acc_noisy_list)
-    # for item in acc_noisy_list:
-    #     print(item)
-    # print('ppl_noisy_list',ppl_noisy_list)
-    # for items in ppl_noisy_list:
-    #     print(items)
-    print('x_sum_list',x_sum__noisy_list)
 
+    end_time = time.time()
+    print('x_sum_list',x_sum__noisy_list)
     time = (end_time-start_time)/60
     print('time_sum,',time)
