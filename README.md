@@ -60,8 +60,18 @@ CUDA_VISIBLE_DEVICES=1 python main_Llama2_LAMBADA_WikiText2_MSD.py
 ```
 
 ## Citation 
-
-Coming soon
+If our work assists your research, feel free to give us a star ⭐ or cite us using:
+```
+@misc{xie2025realmreliableefficientlarge,
+      title={ReaLM: Reliable and Efficient Large Language Model Inference with Statistical Algorithm-Based Fault Tolerance}, 
+      author={Tong Xie and Jiawang Zhao and Zishen Wan and Zuodong Zhang and Yuan Wang and Runsheng Wang and Ru Huang and Meng Li},
+      year={2025},
+      eprint={2503.24053},
+      archivePrefix={arXiv},
+      primaryClass={cs.AR},
+      url={https://arxiv.org/abs/2503.24053}, 
+}
+```
 
 ## Acknowledgements
 
