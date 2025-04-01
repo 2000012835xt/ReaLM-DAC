@@ -42,7 +42,7 @@ Our project provides straightforward error resilience characterization through c
 - Flexible error injection parameters:
   - **Bit Error Rate (BER)**: Configure via `err_prob_list`
   - **Target layers**: Specify within `quantize_model_error`
-  - **Network components**: Choose network components such as `Q` and `Down` by configuring `NoisyW8A8Linear`
+  - **Network components**: Choose network components such as `QKT` and `Down` by configuring `NoisyW8A8BMM` and `NoisyW8A8Linear`
 
 **Example**: To evaluate Llama-3-8b's resilience on HellaSwag:
 
